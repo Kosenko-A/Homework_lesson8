@@ -5,12 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import static java.lang.Double.parseDouble;
+import static java.lang.Double.valueOf;
 
 public class ButtonListener implements ActionListener {
     private final JTextField inputField;
     private final StringBuilder sb = new StringBuilder();
-    private  int operation;
-    public double val;
+
 
     public ButtonListener(JTextField inputField) {
         this.inputField = inputField;
@@ -18,53 +18,104 @@ public class ButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JButton buttons = (JButton) e.getSource();
-        double val1 = Double.parseDouble(buttons.getText());
-        sb.append(inputField.getText()).append(buttons.getText());
-        inputField.setText(sb.toString());
-        sb.setLength(0);
+        double n1 = 0;
+        double n2 = 0;
 
-        if (e.getActionCommand().charAt(0)>='0' && e.getActionCommand().charAt(0)<='9'){
-            val = Double.parseDouble(buttons.getText());
-            sb.append(inputField.getText()).append(buttons.getText());
+        if (e.getActionCommand().charAt(0) >= '0' && e.getActionCommand().charAt(0) <= '9') {
+            sb.append(inputField.getText()).append(e.getActionCommand());
             inputField.setText(sb.toString());
+                n1 = parseDouble(String.valueOf(sb.charAt(0)));
+            if (n1 != 0) {
+                 n2 = parseDouble(String.valueOf(sb.charAt(0)));
+            }
             sb.setLength(0);
-        } else if (e.getActionCommand().charAt(0) == '=') {
-            operation = 0;
-        } else if (e.getActionCommand().charAt(0) == '+') {
-            operation = 1;
-        } else if (e.getActionCommand().charAt(0) == '-') {
-            operation = 2;
-        } else if (e.getActionCommand().charAt(0) == '*') {
-            operation = 3;
-        } else if (e.getActionCommand().charAt(0) == '/') {
-            operation = 4;
-        }
+        } else {
+            double result = 0;
+            if (e.getActionCommand().equals("+")) {
+                sb.append(inputField.getText()).append("+");
+                inputField.setText(sb.toString());
+                result = calculate (1, n1, n2);
+                sb.setLength(0);
 
+            } else if (e.getActionCommand().equals("-")) {
+                sb.append(inputField.getText()).append("-");
+                inputField.setText(sb.toString());
+                result = calculate (2, n1, n2);
+                sb.setLength(0);
+            } else if (e.getActionCommand().equals("*")) {
+                sb.append(inputField.getText()).append("*");
+                inputField.setText(sb.toString());
+                result = calculate (3, n1, n2);
+                sb.setLength(0);
+            } else if (e.getActionCommand().equals("/")) {
+                sb.append(inputField.getText()).append("/");
+                inputField.setText(sb.toString());
+                result = calculate (4, n1, n2);
+                sb.setLength(0);
+            } else if (e.getActionCommand().equals("=")) {
+                sb.append(inputField.getText()).append("=").append(result);
+                inputField.setText(sb.toString());
+                sb.setLength(0);
 
-        switch (operation){
-
-            case 1:
-                double result = val1 + val;
-                inputField.setText(String.valueOf(result));
-                break;
-            case 2:
-                result = val1 - Double.parseDouble(buttons.getText());
-                inputField.setText(String.valueOf(result));
-                break;
-            case 3:
-                result = val1 * Double.parseDouble(buttons.getText());
-                inputField.setText(String.valueOf(result));
-                break;
-            case 4:
-                result = val1 / Double.parseDouble(buttons.getText());
-                inputField.setText(String.valueOf(result));
-                break;
+            }
         }
     }
-    /*private void pressedNumber (String number, int operation){
-        if (operation == 0){
+    private double calculate (int oper, double n1, double n2){
+        double res = 0;
+        switch (oper){
+            case 1:
+                res = n1+n2;
+                break;
+            case 2:
+                res = n1-n2;
+                break;
+            case 3:
+                res = n1*n2;
+                break;
+            case 4:
+                res = n1/n2;
+                break;
+        }
+        return res;
+    }
 
+}
+
+    /*private void pressedNumber (String value){
+        sb.append(inputField.getText()).append(value);
+        inputField.setText(sb.toString());
+        double n1 = parseDouble(String.valueOf(sb.charAt(0)));
+        if (n1 != 0){
+            double n2 = parseDouble(String.valueOf(sb.charAt(0)));
+        }
+
+        sb.setLength(0);
+    }
+
+    private void pressedOperation (String operation){
+        if (operation.equals("+")){
+            sb.append(inputField.getText()).append("+");
+            inputField.setText(sb.toString());
+
+            sb.setLength(0);
+
+        } else if (operation.equals("-")) {
+            sb.append(inputField.getText()).append("-");
+            inputField.setText(sb.toString());
+            sb.setLength(0);
+        }else if (operation.equals("*")) {
+            sb.append(inputField.getText()).append("*");
+            inputField.setText(sb.toString());
+            sb.setLength(0);
+        }else if (operation.equals("/")) {
+            sb.append(inputField.getText()).append("/");
+            inputField.setText(sb.toString());
+            sb.setLength(0);
+        }else if (operation.equals("=")) {
+            sb.append(inputField.getText()).append("=");
+            inputField.setText(sb.toString());
+
+            sb.setLength(0);
         }
     }*/
-}
+
